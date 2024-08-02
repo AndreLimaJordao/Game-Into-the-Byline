@@ -20,13 +20,19 @@ class Flash(pygame.sprite.Sprite):
 
         self.num_flashs = num_flashs
 
-        self.flashs_list = [flashs_list]
+        self.flashs_list = []
+        self.trigger = False
         self.glowsticks_list = []
+
+        self.battery_trigger = False
+        self.super_battery_trigger = False
 
 
     def active(self, event: pygame.event, maze_map: dict, player_position: tuple):
+        self.trigger = False
 
         if event.key in [self.left, self.right, self.up, self.down]:
+            self.trigger = True
             flash_sound.play()
 
             x, y = player_position
@@ -61,19 +67,19 @@ class Flash(pygame.sprite.Sprite):
                 flash_list.append((x, y))
                 possible_directions = maze_map[(y + 1, x + 1)]
 
-            flashs_list.append(flash_list)
+            self.flashs_list.append(flash_list)
 
             self.light(flash_list, 57.5, 57.5)
 
         print("Battery:", self.battery_trigger)
         print("Super Battery:", self.super_battery_trigger)
 
-        if len(flashs_list) > 1 and str(flashs_list[-1]) in str(flashs_list[:-1])[1:-1]:
-            flashs_list.pop(-1)
-        elif len(flashs_list) > self.num_flashs:
-            flashs_list.pop(0)
+        if len(self.flashs_list) > 1 and str(self.flashs_list[-1]) in str(self.flashs_list[:-1])[1:-1]:
+            self.flashs_list.pop(-1)
+        elif len(self.flashs_list) > self.num_flashs:
+            self.flashs_list.pop(0)
 
-        return flashs_list
+        #return flashs_list
 
     def light(self, flash_list: list, x_maze: float, y_maze: float):
         for x_flash, y_flash in flash_list:
@@ -103,6 +109,9 @@ class Flash(pygame.sprite.Sprite):
         self.glowsticks_list.append(glowstick_position)
 
         #return glowsticks_list
+
+    def get_flashs_lists(self):
+        return self.flashs_list, self.trigger
 
     def get_glowsticks_list(self):
         return self.glowsticks_list

@@ -7,7 +7,7 @@ from player import Player
 from inventory import Inventory
 
 
-QTY_BOXES = 400
+QTY_BOXES = 20
 glowstick_tick = 10
 radar_tick = 30
 super_battery_tick = 40
@@ -21,6 +21,8 @@ class Boxes(pygame.sprite.Sprite):
         self.boxes_pos = []
         self.itens = ["k", "k", "k", "k", "k"]
         self.qty_boxes = qty_boxes
+        self.rect_message = pygame.Rect(895, 460, 260, 85)
+        self.items_name = {"g": "Glowstick", "r": "Radar", "s": "Super Bateria", "#": "Nada encontrado"}
 
     def generate_boxes(self, maze_map) -> None:
         all_positions = [cell for cell in maze_map.keys()]
@@ -42,13 +44,17 @@ class Boxes(pygame.sprite.Sprite):
                 self.itens.insert(index, "#")
         self.boxes_pos = positions
 
-    def get_box(self, event, flashs_list, player: Player, inventory: Inventory):
+    def get_box(self, event, flashs_list, player: Player, inventory: Inventory, glowsticks_list: list):
         if event.key == K_SPACE:
             if player.position_maze in self.boxes_pos:
 
                 flash_cells = []
                 for flash_list in flashs_list:
                     for column, line in flash_list:
+                        flash_cells.append((line + 1, column + 1))
+                        
+                for glowstick_list in glowsticks_list:
+                    for column, line in glowstick_list:
                         flash_cells.append((line + 1, column + 1))
 
                 if player.position_maze in flash_cells:
@@ -62,20 +68,24 @@ class Boxes(pygame.sprite.Sprite):
 
                     if item != "#" and player.inventory[item] <= 6:
                         inventory.add_item(item)
-                        return 1
-
+                        
+                        return True
+    
     def draw(self, screen, maze, flashs_list, glowsticks_list):
         flash_cells = []
-
 
         for flash_list in flashs_list:
             for column, line in flash_list:
                 flash_cells.append((line + 1, column + 1))
 
+        for glowstick_list in glowsticks_list:
+            for column, line in glowstick_list:
+                flash_cells.append((line + 1, column + 1))
+
         for box_pos in self.boxes_pos:
             if box_pos in flash_cells:
                 box = pygame.Surface((14, 14))
-                box.fill((153, 76, 0))
+                box.fill((5, 79, 119))
 
                 pixel_xy = utils.cell_to_pixels(maze, box_pos)
                 cell_rect = pygame.Rect(pixel_xy, (maze.cell_grid_width, maze.cell_grid_width))
