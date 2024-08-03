@@ -7,18 +7,18 @@ def solve_path(start_coord_tuple, end_coord_tuple, m):
     got_into = [start]
     bfs_solved_path_rev = {}
     rep = True
-    while len(possibles)>0 and rep:
+    while len(possibles) > 0 and rep:
         current_space = possibles.pop(0)
         if current_space == end:
             rep = False
         else:
             for d in 'EWSN':
                 if m[current_space][d]:
-                    if d=='W':
+                    if d == 'W':
                         sub_space = (current_space[0],current_space[1]-1)
-                    elif d=='E':
+                    elif d == 'E':
                         sub_space = (current_space[0],current_space[1]+1)
-                    elif d=='N':
+                    elif d == 'N':
                         sub_space = (current_space[0]-1,current_space[1])
                     else:
                         sub_space = (current_space[0]+1,current_space[1])

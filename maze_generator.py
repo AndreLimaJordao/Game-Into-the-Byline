@@ -5,11 +5,14 @@ import pyamaze
 class Maze(pygame.sprite.Sprite):
     def __init__(self, x, y, width, height, maze_map):
         super().__init__()
+
         self.rect = pygame.Rect(x, y, width, height)
+        self.num_pixels = 20
+
         self.maze_map = maze_map
         self.initial_point_x, self.initial_point_y = self.rect.topleft
         self.width_maze = self.rect.width
-        self.cell_grid_width = self.width_maze // 20
+        self.cell_grid_width = self.width_maze // self.num_pixels
 
     def display_maze_cells(self, screen, cells_position):
         wall_color = (255, 255, 255)
