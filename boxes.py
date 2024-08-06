@@ -10,7 +10,7 @@ from inventory import Inventory
 QTY_BOXES = 20
 glowstick_tick = 10
 radar_tick = 30
-super_battery_tick = 40
+super_battery_tick = 60
 pygame.mixer.init()
 open_chest = pygame.mixer.Sound("assets/sounds/open_chest.wav")
 
