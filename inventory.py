@@ -22,7 +22,7 @@ class Inventory(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
 
         # key, glowstick, super battery, radar
-        self.inventory = {"k": 0, "g": 1, "r": 2, "s": 1}
+        self.inventory = {"k": 0, "g": 4, "r": 2, "s": 1}
 
         self.key_glowstick = K_1
         self.key_radar = K_2

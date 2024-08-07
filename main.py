@@ -121,7 +121,7 @@ class Game:
                         pygame.quit()
                         exit()
 
-                    if self.map_id == "background":
+                    if self.map_id == "background" and self.player.num_steps == 0:
                         mousex, mousey = pygame.mouse.get_pos()
                         print((mousex, mousey))
 
@@ -132,7 +132,7 @@ class Game:
                             got_killed = got_killed_bob = self.bob.move(self.player.get_position_maze())
                             self.bob.set_new_steps(3)
 
-                        self.player.control(event, self.maze_map)
+                        self.player.control(event, self.maze)
 
                         player_position = self.player.get_position()
 
@@ -265,38 +265,49 @@ class Game:
                 self.screen.blit(self.display, (0, 0))
                 pygame.display.update()
             elif self.map_id == "background":
-                self.screen.blit(self.display, (0, 0))
 
-                self.inventory.draw_glowstick(self.boxes.get_boxes_pos())
-                
-                if is_scared:
-                    self.screen.blit(self.is_scared_photo, (895, 56))
+                if self.player.num_steps == 0:
+                    self.screen.blit(self.display, (0, -0.7))
+
+                    self.inventory.draw_glowstick(self.boxes.get_boxes_pos())
+
+                    if is_scared:
+                        self.screen.blit(self.is_scared_photo, (895, 56))
+                    else:
+                        self.screen.blit(self.is_not_scared_photo, (895, 56))
+
+                    if box_collected or item == "#":
+                        utils.draw_item_found(self.screen, self.font_item, item_description[item], self.rect_item)
+                    else:
+                        utils.draw_no_item(self.screen, self.font_item, self.rect_item)
+
+                    utils.draw_qty_items(self.screen, texts)
+                    self.boxes.draw(self.screen, self.maze, flashs_list)
+
+                    if door_revealed:
+                        x, y = door_position
+                        utils.draw(self.maze, self.screen, "#FFBD59", (14, 14), (y + 1, x + 1))
+
+                    utils.get_monster_draw(self.maze, self.screen, monsters_captured)
+                    utils.active_radar(self.screen, self.maze, (billy_radar, bob_radar))
+                    utils.show_battery(self.screen, battery_trigger)
+
+                    self.inventory.try_generate_door()
+
+                    #self.player.draw(maze_position)
+                    # self.maze.display_maze_cells(self.screen, (255, 255, 255), [[self.player.get_position()]], flashs_list)
+
+                    self.player.draw(maze_position)
+                    self.maze.display_maze_cells(self.screen, (255, 255, 255), [[self.player.get_position()]])
+
+                    self.maze.display_maze_cells(self.screen, (255, 255, 255), flashs_list)
+
+                    self.maze.display_maze_cells(self.screen, (222, 252, 8), glowsticks_list)
+
+                    pygame.display.update()
+
                 else:
-                    self.screen.blit(self.is_not_scared_photo, (895, 56))
-                    
-
-                if box_collected or item == "#":
-                    utils.draw_item_found(self.screen, self.font_item, item_description[item], self.rect_item)
-                else:
-                    utils.draw_no_item(self.screen, self.font_item, self.rect_item)
-
-                utils.draw_qty_items(self.screen, texts)
-                self.boxes.draw(self.screen, self.maze, flashs_list)
-
-                if door_revealed:
-                    x, y = door_position
-                    utils.draw(self.maze, self.screen, "#FFBD59", (14, 14), (y + 1, x + 1))
-
-                utils.get_monster_draw(self.maze, self.screen, monsters_captured)
-                utils.active_radar(self.screen, self.maze, (billy_radar, bob_radar))
-                utils.show_battery(self.screen, battery_trigger)
-
-                self.inventory.try_generate_door()
-
-                self.player.draw(maze_position)
-                self.maze.display_maze_cells(self.screen, flashs_list, glowsticks_list, self.player.get_position_maze())
-
-                pygame.display.update()
+                    self.player.move(self.maze, flashs_list, glowsticks_list, self.boxes.get_boxes_pos())
 
 
 if __name__ == "__main__":

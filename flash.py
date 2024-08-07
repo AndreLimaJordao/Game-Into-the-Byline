@@ -103,8 +103,8 @@ class Flash(pygame.sprite.Sprite):
             #pygame.time.delay(5)
 
     def set_type_battery(self):
-        value = random.choice([1, 2, 3, 4, 5])
-        if value == 5:
+        value = random.choice([1, 2, 3, 4])
+        if value == 4:
             self.super_battery_trigger = True
         else:
             self.battery_trigger = True

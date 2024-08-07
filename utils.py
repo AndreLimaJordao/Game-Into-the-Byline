@@ -41,14 +41,6 @@ def active_radar(win, maze, billy_bob_position: tuple):
         pygame.draw.rect(win, (255, 153, 51), (x_billy + 8, y_billy + 8, 14, 14))
         pygame.draw.rect(win, (255, 153, 51), (x_bob + 8, y_bob + 8, 14, 14))
 
-    '''
-    for i in range(len(monster_list)):
-        if monster_list[i][1] == 0:
-            draw(m, win, "#F40000", (14, 14), monster_list[i][0])
-        if monster_list[i][1] == 1:
-            draw(m, win, "#F44E3F", (14, 14), monster_list[i][0])
-    '''
-
 
 def show_battery(win, battery_trigger):
     surface_battery = pygame.Surface((115, 110), pygame.SRCALPHA)

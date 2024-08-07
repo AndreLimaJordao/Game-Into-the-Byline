@@ -14,8 +14,15 @@ class Maze(pygame.sprite.Sprite):
         self.width_maze = self.rect.width
         self.cell_grid_width = self.width_maze // self.num_pixels
 
-    def display_maze_cells(self, screen, flash_lists, glowstick_lists, player_position):
+    def display_maze_cells(self, screen, wall_color, *cells_list):
 
+        cells = []
+        for cell_list in cells_list:
+            for cell in cell_list:
+                for column, line in cell:
+                    cells.append((line + 1, column + 1))
+
+        """
         cells = [player_position]
 
         for flash_list in flash_lists:
@@ -25,8 +32,10 @@ class Maze(pygame.sprite.Sprite):
         for glowstick_position in glowstick_lists:
             for column, line in glowstick_position:
                 cells.append((line + 1, column + 1))
+        """
 
-        wall_color = (255, 255, 255)
+
+        #wall_color = (255, 255, 255)
         for line, column in cells:
             pos_x = self.initial_point_x + ((column - 1) * self.cell_grid_width)
             pos_y = self.initial_point_y + ((line - 1) * self.cell_grid_width)
@@ -59,7 +68,7 @@ class Maze(pygame.sprite.Sprite):
 
                 index += 1
 
-        pygame.display.update()
+        #pygame.display.update()
 
 
 def get_mazemap() -> dict:
